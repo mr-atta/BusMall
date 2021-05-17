@@ -24,11 +24,11 @@ img {
 main {
   background-color: #214a4c;
   color: #e4ddd1;
-  height: 1000px;
+  height: 100%;
 }
 header {
   background-color: #1b4e4e;
-  color: white;
+  color: rgb(255, 255, 255);
 }
 #results {
   color: #8db5fd;
@@ -53,4 +53,9 @@ button {
 #attempts {
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   font-size: larger;
+}
+#myChart {
+  height: 450px;
+  width: 600px;
+  margin: auto;
 }
