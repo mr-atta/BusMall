@@ -5,6 +5,9 @@ let attemptNum = 0;
 let maxAttempts = 25;
 let attemptNumEl = document.getElementById('attempts');
 let products = [];
+let productsImgNames = [];
+let productssClicks = [];
+let productssViews = [];
 
 // creat OBJ
 
@@ -16,6 +19,7 @@ function ProductObj(productName) {
     this.clicks = 0;
     this.views = 0;
     products.push(this);
+    productsImgNames.push(this.productName);
 }
 
 let productImsge = ['bag.jpg','banana.jpg','bathroom.jpg','boots.jpg','breakfast.jpg','bubblegum.jpg','chair.jpg','cthulhu.jpg','dog-duck.jpg','dragon.jpg','pen.jpg','pet-sweep.jpg','scissors.jpg','shark.jpg','sweep.png','tauntaun.jpg','unicorn.jpg','water-can.jpg','wine-glass.jpg']
@@ -76,19 +80,6 @@ while (leftImgNum === middleImgNum || middleImgNum === rightImgNum || leftImgNum
 
 }
 
-
-
-
-// while (leftImgNum === middleImgNum){
-//     leftImgNum = randomNum () ;
-// }
-// while (middleImgNum === rightImgNum){
-//     rightImgNum = randomNum () ;
-// }
-// while (rightImgNum === leftImgNum){
-//     rightImgNum = randomNum () ;
-// }
-
 getImg ();
 console.log(products);
 
@@ -111,12 +102,11 @@ function clickabl(event){
         }
         getImg ();
     }else if (attemptNum > maxAttempts){
-        
      leImg.removeEventListener('click',clickabl);
      miImg.removeEventListener('click',clickabl);
      riImg.removeEventListener('click',clickabl);
+    
     }
-
         
 }
 
@@ -132,5 +122,50 @@ function btnFunction(){
         liEl = document.createElement('li');
         ulElement.appendChild(liEl);
         liEl.textContent = `${products[i].productName} had ${products[i].clicks} votes, and was seen ${products[i].views} times.`
-    } 
+        productssClicks.push(products[i].clicks);
+        productssViews.push(products[i].views);
+        
+    }
+    chartRender(); 
+}
+
+// chart code 
+
+function chartRender(){
+    var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: productsImgNames,
+        datasets: [{
+            label: '# of Votes',
+            data: productssClicks ,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)'
+
+            ],
+            borderWidth: 3
+        },{
+            label: '# of Viwes',
+            data: productssViews ,
+            backgroundColor: [
+                'rgba(153, 102, 255, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
 }
