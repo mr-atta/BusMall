@@ -52,6 +52,7 @@ let rightImgNum;
 // get the html img value
 
 function getImg (){
+
     leftImgNum = randomNum () ;
     middleImgNum = randomNum () ;
     rightImgNum = randomNum () ;
@@ -62,7 +63,9 @@ while (leftImgNum === middleImgNum || middleImgNum === rightImgNum || leftImgNum
     leftImgNum = randomNum () ;
     rightImgNum = randomNum () ;
 }
+// finished compare the random Num for images
 
+ // get the html img src and title
     leImg.setAttribute('src',products[leftImgNum].source);
     miImg.setAttribute('src',products[middleImgNum].source);
     riImg.setAttribute('src',products[rightImgNum].source);
@@ -71,28 +74,32 @@ while (leftImgNum === middleImgNum || middleImgNum === rightImgNum || leftImgNum
     miImg.setAttribute('title',products[middleImgNum].source);
     riImg.setAttribute('title',products[rightImgNum].source);
 
+    // ++ to viwe 
     products[leftImgNum].views++ ;
     products[middleImgNum].views++ ;
     products[rightImgNum].views++ ;
 
+    // change the attempt Num
     attemptNumEl.textContent = attemptNum;
 
 
 }
 
 getImg ();
-console.log(products);
+// console.log(products);
 
-// make image clickabl
+
+// make image clickabl 
 
 leImg.addEventListener('click',clickabl);
 miImg.addEventListener('click',clickabl);
 riImg.addEventListener('click',clickabl);
 
-function clickabl(event){
-    attemptNum++;
+function clickabl(event){              // his function 
 
-    if(attemptNum <= maxAttempts){
+    attemptNum++;                              // attempt Num ++
+
+    if(attemptNum <= maxAttempts){             // compare attempt Num with max attempt
         if(event.target.id === 'leftImg'){
             products[leftImgNum].clicks++ ;
         }else if(event.target.id === 'middleImg'){
@@ -110,23 +117,71 @@ function clickabl(event){
         
 }
 
+// the Results
 document.getElementById("Results-button").addEventListener('click',btnFunction);
 
 
-function btnFunction(){
+function btnFunction(){                  // btn Function
     
-  console.log('hello')
-    let ulElement = document.getElementById('results');
-    let liEl ;
-    for (let i = 0; i < products.length; i++) {
-        liEl = document.createElement('li');
-        ulElement.appendChild(liEl);
-        liEl.textContent = `${products[i].productName} had ${products[i].clicks} votes, and was seen ${products[i].views} times.`
-        productssClicks.push(products[i].clicks);
-        productssViews.push(products[i].views);
-        
-    }
+    // let ulElement = document.getElementById('results');
+    // let liEl ;
+
+
+
+    // for (let i = 0; i < products.length; i++) {
+    //     liEl = document.createElement('li');
+    //     ulElement.appendChild(liEl);
+    //     liEl.textContent = `${products[i].productName} had ${products[i].clicks} votes, and was seen ${products[i].views} times.`
+    //     productssClicks.push(products[i].clicks);
+    //     productssViews.push(products[i].views);
+
+    
+    // }
+     
+    
+    renderOrders();
+    settingItems();
+
+
     chartRender(); 
+}
+
+function renderOrders(){               // fill the li's
+     let ulElement = document.getElementById('results');
+       let liEl ;
+
+
+
+   for (let i = 0; i < products.length; i++) {
+     liEl = document.createElement('li');
+     ulElement.appendChild(liEl);
+     liEl.textContent = `${products[i].productName} had ${products[i].clicks} votes, and was seen ${products[i].views} times.`
+     productssClicks.push(products[i].clicks);
+     productssViews.push(products[i].views);
+
+
+    } 
+}
+
+
+
+function settingItems() {                 // send data to the local
+
+    let data = JSON.stringify(products);
+    console.log(data)
+    localStorage.setItem('product', data);     // key , value
+}
+
+function gettingItems() {                // re take data from local
+
+    let stringObj = localStorage.getItem('product');
+    // console.log(stringObj);
+    let normalObj = JSON.parse(stringObj);
+    // console.log(normalObj);
+    if (normalObj !== null) {
+        products = normalObj;
+    }
+    // renderOrders();         // if want keep the li's after refrash
 }
 
 // chart code 
@@ -169,3 +224,8 @@ var myChart = new Chart(ctx, {
     }
 });
 }
+
+// //////////////////////////////////////////
+
+gettingItems();
+
