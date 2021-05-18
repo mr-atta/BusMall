@@ -2,7 +2,7 @@
 
 // var global
 let attemptNum = 0;
-let maxAttempts = 25;
+let maxAttempts = 10;
 let attemptNumEl = document.getElementById('attempts');
 let products = [];
 let productsImgNames = [];
@@ -81,7 +81,7 @@ while (leftImgNum === middleImgNum || middleImgNum === rightImgNum || leftImgNum
 }
 
 getImg ();
-console.log(products);
+// console.log(products);
 
 // make image clickabl
 
@@ -115,18 +115,63 @@ document.getElementById("Results-button").addEventListener('click',btnFunction);
 
 function btnFunction(){
     
-  console.log('hello')
-    let ulElement = document.getElementById('results');
-    let liEl ;
-    for (let i = 0; i < products.length; i++) {
-        liEl = document.createElement('li');
-        ulElement.appendChild(liEl);
-        liEl.textContent = `${products[i].productName} had ${products[i].clicks} votes, and was seen ${products[i].views} times.`
-        productssClicks.push(products[i].clicks);
-        productssViews.push(products[i].views);
-        
-    }
+    // let ulElement = document.getElementById('results');
+    // let liEl ;
+
+
+
+    // for (let i = 0; i < products.length; i++) {
+    //     liEl = document.createElement('li');
+    //     ulElement.appendChild(liEl);
+    //     liEl.textContent = `${products[i].productName} had ${products[i].clicks} votes, and was seen ${products[i].views} times.`
+    //     productssClicks.push(products[i].clicks);
+    //     productssViews.push(products[i].views);
+
+    
+    // }
+     
+    // 
+    renderOrders();
+    settingItems();
+    // 
+
     chartRender(); 
+}
+
+function renderOrders(){
+    let ulElement = document.getElementById('results');
+let liEl ;
+
+
+
+for (let i = 0; i < products.length; i++) {
+    liEl = document.createElement('li');
+    ulElement.appendChild(liEl);
+    liEl.textContent = `${products[i].productName} had ${products[i].clicks} votes, and was seen ${products[i].views} times.`
+    productssClicks.push(products[i].clicks);
+    productssViews.push(products[i].views);
+
+
+}
+}
+
+
+
+function settingItems() {
+    let data = JSON.stringify(products);
+    console.log(data)
+    localStorage.setItem('product', data);
+}
+
+function gettingItems() {
+    let stringObj = localStorage.getItem('product');
+    // console.log(stringObj);
+    let normalObj = JSON.parse(stringObj);
+    // console.log(normalObj);
+    if (normalObj !== null) {
+        products = normalObj;
+    }
+    // renderOrders();
 }
 
 // chart code 
@@ -169,3 +214,8 @@ var myChart = new Chart(ctx, {
     }
 });
 }
+
+// //////////////////////////////////////////
+
+gettingItems();
+
